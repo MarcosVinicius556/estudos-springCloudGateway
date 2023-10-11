@@ -1,0 +1,21 @@
+#Configurando as rotas que nosso gatewau ficará responsável
+spring:
+    cloud:
+        gateway:
+            routes:
+                - id: payment-route # Definimos um nome para a rota (ou ID)
+                  uri: ${PAYMENT_ROUTE_URI:http://localhost:8101} #Definimos também um caminho, que é onde essa rota irá acessar
+                  predicates: # Aqui passamos os predicates, que são condições para que esta rota seja chamada
+                    - Method=GET
+                    - Path=/payments/{workerId}/days/{days}
+                - id: get-all-workers
+                  uri: ${WORKER_ROUTE_URI:http://localhost:56684}
+                  predicates:
+                    - Method=GET
+                    - Path=/workers
+                - id: get-worker-by-id
+                  uri: ${WORKER_ROUTE_URI:http://localhost:56684}
+                  predicates: 
+                    - Method=GET
+                    - Path=/workers/{workerId}
+
